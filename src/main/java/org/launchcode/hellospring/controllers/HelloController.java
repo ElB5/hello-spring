@@ -88,7 +88,7 @@ public class HelloController {
 //        return "Hello, Spring!";
 //    }
 
-    // lives at /hello/goodbye
+//    // lives at /hello/goodbye
     @GetMapping("goodbye")
     public String goodbye() {
         return "Goodbye, Spring!";
@@ -106,6 +106,7 @@ public class HelloController {
         return "Hello, " + name + "!";
     }
 
+
     // /hello/form
     @GetMapping("form")
     public String helloForm() {
@@ -113,10 +114,50 @@ public class HelloController {
                 "<body>" +
                 "<form action = '/hello' method = 'post'>" + // submit a request to /hello
                 "<input type = 'text' name = 'name' >" +
+                "<label for='language-select'>Choose a language:</label>" +
                 "<input type = 'submit' value = 'Greet Me!' >" +
+                "<select name='languages' id='language-select'>" +
+                "<option value=''>--Please choose a language--</option>" +
+                "<option value='english'>English</option>" +
+                "<option value='french'>French</option>" +
+                "<option value='spanish'>Spanish</option>" +
+                "<option value='german'>German</option>" +
+                "<option value='italian'>Italian</option>" +
+                "</select>" +
                 "</form>" +
                 "</body>" +
                 "</html>";
     }
 
+@RequestMapping(value="hello", method = RequestMethod.POST)
+@ResponseBody
+public String helloPost(@RequestParam String name, @RequestParam String language) {
+    if (name == null) {
+        name = "World";
+    }
+
+    return createMessage(name, language);
+}
+
+    public static String createMessage(String n, String l) {
+        String greeting = "";
+
+        if (l.equals("english")) {
+            greeting = "Hello";
+        }
+        else if (l.equals("french")) {
+            greeting = "Bonjour";
+        }
+        else if (l.equals("italian")) {
+            greeting = "Bonjourno";
+        }
+        else if (l.equals("spanish")) {
+            greeting = "Hola";
+        }
+        else if (l.equals("german")) {
+            greeting = "Hallo";
+        }
+
+        return greeting + " " + n;
+    }
 }
